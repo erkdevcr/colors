@@ -88,7 +88,7 @@
   .icon-btn { display:flex; align-items:center; gap:7px; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); padding:7px 12px; cursor:pointer; font-size:12px; color:var(--text-muted); transition:all .15s; user-select:none; white-space:nowrap; }
   .icon-btn:hover { border-color:var(--text-muted); color:var(--text); }
   .icon-btn.active { border-color:var(--good); color:var(--good); background:rgba(76,175,130,.08); }
-  .sort-select { background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:0 10px; color:var(--text-muted); font-size:12px; outline:none; cursor:pointer; height:42px; box-sizing:border-box; }
+  .sort-select { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:0 10px; color:var(--text-muted); font-size:12px; outline:none; cursor:pointer; height:42px; box-sizing:border-box; }
 
   /* RESULTS BAR */
   .results-bar { padding:12px 24px 8px; display:flex; align-items:center; justify-content:space-between; }
@@ -231,12 +231,12 @@
             <span class="slider-num" id="hueVal">0</span>
           </div>
           <div class="slider-group">
-            <input type="range" class="hwb-slider" id="whitenessSlider" min="0" max="100" value="0">
-            <span class="slider-num" id="whitenessVal">0</span>
+            <input type="range" class="hwb-slider" id="satSlider" min="0" max="100" value="100">
+            <span class="slider-num" id="satVal">100</span>
           </div>
           <div class="slider-group">
-            <input type="range" class="hwb-slider" id="blacknessSlider" min="0" max="100" value="0">
-            <span class="slider-num" id="blacknessVal">0</span>
+            <input type="range" class="hwb-slider" id="lightnessSlider" min="0" max="100" value="50">
+            <span class="slider-num" id="lightnessVal">50</span>
           </div>
           <div class="slider-group">
             <input type="range" class="hwb-slider" id="rangeSlider" min="0" max="10" value="5" step="1">
@@ -330,27 +330,26 @@ function init(){
   allColors=RAW.filter(([name])=>name).map(([name,hex])=>{
     const [r,g,b]=hexToRgb(hex);
     const [h,s,l]=rgbToHsl(r,g,b);
-    const [hw,ww,bw]=rgbToHwb(r,g,b);
-    return{name,hex,r,g,b,h,s,l,hw,ww,bw,nameL:name.toLowerCase()};
+    return{name,hex,r,g,b,h,s,l,nameL:name.toLowerCase()};
   });
   document.getElementById('totalStat').innerHTML=
     `<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4.5" fill="none" stroke="currentColor" stroke-width="1"/></svg>${allColors.length.toLocaleString()} colors`;
   document.getElementById('loadingMsg').remove();
-  syncPickerFromHWB();
+  syncPickerFromHSL();
   render();
 }
 
 function applyFilters(){
   if(pickerMode){
-    const dH=pickerRange*3.6, dW=pickerRange, dB=pickerRange;
+    const dH=pickerRange*3.6, dS=pickerRange, dL=pickerRange;
     filtered=allColors.filter(c=>{
-      const hd=Math.min(Math.abs(c.hw-pickerH),360-Math.abs(c.hw-pickerH));
-      return hd<=dH && Math.abs(c.ww-pickerW)<=dW && Math.abs(c.bw-pickerB)<=dB;
+      const hd=Math.min(Math.abs(c.h-pickerH),360-Math.abs(c.h-pickerH));
+      return hd<=dH && Math.abs(c.s-pickerS)<=dS && Math.abs(c.l-pickerL)<=dL;
     });
     filtered.sort((a,b)=>{
-      const ha=Math.min(Math.abs(a.hw-pickerH),360-Math.abs(a.hw-pickerH));
-      const hb=Math.min(Math.abs(b.hw-pickerH),360-Math.abs(b.hw-pickerH));
-      return (ha+Math.abs(a.ww-pickerW)+Math.abs(a.bw-pickerB))-(hb+Math.abs(b.ww-pickerW)+Math.abs(b.bw-pickerB));
+      const ha=Math.min(Math.abs(a.h-pickerH),360-Math.abs(a.h-pickerH));
+      const hb=Math.min(Math.abs(b.h-pickerH),360-Math.abs(b.h-pickerH));
+      return (ha+Math.abs(a.s-pickerS)+Math.abs(a.l-pickerL))-(hb+Math.abs(b.s-pickerS)+Math.abs(b.l-pickerL));
     });
   } else {
     const q=currentQuery.trim().toLowerCase();
@@ -946,7 +945,7 @@ document.getElementById('closeDetail').addEventListener('click',()=>{
 });
 
 // ===== HWB SLIDERS =====
-let pickerH=0, pickerW=0, pickerB=0, pickerRange=5;
+let pickerH=0, pickerS=100, pickerL=50, pickerRange=5;
 
 function hwbToRgb(h,w,b){
   w/=100;b/=100;
@@ -969,21 +968,21 @@ function rgbToHwb(r,g,b){
 function updateSliderGradients(){
   document.getElementById('hueSlider').style.background=
     'linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)';
-  const pure=hwbToRgb(pickerH,0,0);
-  document.getElementById('whitenessSlider').style.background=
-    `linear-gradient(to right,rgb(${pure}),#fff)`;
-  document.getElementById('blacknessSlider').style.background=
-    `linear-gradient(to right,rgb(${pure}),#111)`;
+  const pure=hslToRgb(pickerH,100,50);
+  document.getElementById('satSlider').style.background=
+    `linear-gradient(to right,hsl(0,0%,${pickerL}%),rgb(${pure}))`;
+  document.getElementById('lightnessSlider').style.background=
+    `linear-gradient(to right,#000,rgb(${pure}),#fff)`;
 }
 
-function syncPickerFromHWB(){
-  const [r,g,b]=hwbToRgb(pickerH,pickerW,pickerB);
+function syncPickerFromHSL(){
+  const [r,g,b]=hslToRgb(pickerH,pickerS,pickerL);
   const hex=rgbToHex(r,g,b);
   document.getElementById('pickerPreview').style.background=hex;
   document.getElementById('pickerHexInput').textContent=hex;
   document.getElementById('hueVal').textContent=Math.round(pickerH);
-  document.getElementById('whitenessVal').textContent=Math.round(pickerW);
-  document.getElementById('blacknessVal').textContent=Math.round(pickerB);
+  document.getElementById('satVal').textContent=Math.round(pickerS);
+  document.getElementById('lightnessVal').textContent=Math.round(pickerL);
   updateSliderGradients();
   pickerRgb=[r,g,b];
   if(pickerMode){
@@ -993,9 +992,9 @@ function syncPickerFromHWB(){
 }
 
 let pickerDebounce;
-document.getElementById('hueSlider').addEventListener('input',function(){pickerH=+this.value;pickerMode=true;searchInput.value='';currentQuery='';clearBtn.classList.remove('visible');syncPickerFromHWB();});
-document.getElementById('whitenessSlider').addEventListener('input',function(){pickerW=+this.value;pickerMode=true;searchInput.value='';currentQuery='';clearBtn.classList.remove('visible');syncPickerFromHWB();});
-document.getElementById('blacknessSlider').addEventListener('input',function(){pickerB=+this.value;pickerMode=true;searchInput.value='';currentQuery='';clearBtn.classList.remove('visible');syncPickerFromHWB();});
+document.getElementById('hueSlider').addEventListener('input',function(){pickerH=+this.value;pickerMode=true;searchInput.value='';currentQuery='';clearBtn.classList.remove('visible');syncPickerFromHSL();});
+document.getElementById('satSlider').addEventListener('input',function(){pickerS=+this.value;pickerMode=true;searchInput.value='';currentQuery='';clearBtn.classList.remove('visible');syncPickerFromHSL();});
+document.getElementById('lightnessSlider').addEventListener('input',function(){pickerL=+this.value;pickerMode=true;searchInput.value='';currentQuery='';clearBtn.classList.remove('visible');syncPickerFromHSL();});
 document.getElementById('rangeSlider').addEventListener('input',function(){pickerRange=+this.value;document.getElementById('rangeVal').textContent=pickerRange+'%';currentPage=0;render();});
 
 
