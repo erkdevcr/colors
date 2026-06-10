@@ -35,7 +35,7 @@
   /* Row 1: search bar alone */
   .search-wrap { position:relative; }
   .search-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted); pointer-events:none; }
-  #searchInput { width:100%; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:10px 38px 10px 38px; color:var(--text); font-size:14px; outline:none; transition:border-color .15s; }
+  #searchInput { width:100%; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:0 38px; height:42px; box-sizing:border-box; color:var(--text); font-size:14px; outline:none; transition:border-color .15s; }
   #searchInput::placeholder { color:var(--text-dim); }
   #searchInput:focus { border-color:var(--accent); }
   .clear-btn { position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-muted); cursor:pointer; padding:2px; display:none; align-items:center; }
@@ -52,7 +52,7 @@
   /* PICKER PANEL (HWB sliders) */
   .picker-panel { display:flex; flex-direction:column; gap:8px; flex:1; }
   .picker-top { display:flex; gap:12px; align-items:stretch; }
-  #pickerPreview { width:68px; border-radius:10px; border:1px solid var(--border); flex-shrink:0; min-height:80px; }
+  #pickerPreview { width:95px; aspect-ratio:1/1; border-radius:10px; border:1px solid var(--border); flex-shrink:0; }
   .picker-sliders { flex:1; display:flex; flex-direction:column; justify-content:space-between; gap:5px; }
   .slider-group { display:flex; align-items:center; gap:8px; }
   .hwb-slider {
@@ -71,12 +71,7 @@
     font-variant-numeric:tabular-nums;
   }
   .picker-hex-row { display:flex; gap:8px; align-items:center; }
-  #pickerHexInput {
-    flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:6px;
-    padding:6px 10px; color:var(--accent); font-size:13px;
-    font-family:'SF Mono','Fira Code',monospace; font-weight:600; outline:none;
-  }
-  #pickerHexInput:focus { border-color:var(--accent); }
+  #pickerHexInput { background:none; border:none; padding:0; }
 
   /* Picker toggle */
 
@@ -93,7 +88,7 @@
   .icon-btn { display:flex; align-items:center; gap:7px; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); padding:7px 12px; cursor:pointer; font-size:12px; color:var(--text-muted); transition:all .15s; user-select:none; white-space:nowrap; }
   .icon-btn:hover { border-color:var(--text-muted); color:var(--text); }
   .icon-btn.active { border-color:var(--good); color:var(--good); background:rgba(76,175,130,.08); }
-  .sort-select { background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:6px 10px; color:var(--text-muted); font-size:12px; outline:none; cursor:pointer; }
+  .sort-select { background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:0 10px; color:var(--text-muted); font-size:12px; outline:none; cursor:pointer; height:42px; box-sizing:border-box; }
 
   /* RESULTS BAR */
   .results-bar { padding:12px 24px 8px; display:flex; align-items:center; justify-content:space-between; }
@@ -106,13 +101,9 @@
   .color-card:hover { border-color:var(--text-muted); transform:translateY(-1px); }
   .swatch { height:80px; width:100%; position:relative; }
   .dist-badge { position:absolute; top:7px; left:7px; background:rgba(0,0,0,.5); backdrop-filter:blur(4px); border-radius:4px; padding:2px 6px; font-size:10px; color:#aaa; font-family:'SF Mono','Fira Code',monospace; }
-  .card-body { padding:10px 12px 11px; }
-  .color-name { font-size:13px; font-weight:500; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:6px; }
-  .color-values { display:flex; flex-direction:column; gap:3px; }
-  .val-row { display:flex; justify-content:space-between; align-items:center; }
-  .val-label { font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.06em; min-width:34px; }
-  .val-data { font-size:11px; color:var(--text-muted); font-variant-numeric:tabular-nums; font-family:'SF Mono','Fira Code',monospace; }
-  .val-hex { color:var(--accent); font-size:12px; font-weight:500; }
+  .card-body { padding:8px 12px 10px; }
+  .color-name { font-size:13px; font-weight:500; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; }
+  .color-hex { font-size:11px; color:var(--accent); font-family:'SF Mono','Fira Code',monospace; font-weight:500; }
 
   /* DETAIL PANEL */
   #main { transition: margin-right 0.32s cubic-bezier(0.4,0,0.2,1); }
@@ -144,7 +135,7 @@
     .copy-hex-btn-mobile:hover { color:var(--accent); }
     .copy-hex-btn-mobile.copied { color:var(--good); }
     .detail-content-mobile { flex:1; overflow:hidden; padding:10px 12px; }
-    .copy-hex-btn { display:none; }
+    .copy-hex-btn { display:none !important; }
     .detail-swatch-mobile { display:block; }
   }
   .detail-swatch { height:140px; flex-shrink:0; }
@@ -205,16 +196,23 @@
 <div id="main">
 <div class="controls">
 
-  <!-- Row 1: search -->
-  <div class="search-wrap">
-    <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
-      <line x1="11" y1="11" x2="14.5" y2="14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    </svg>
-    <input type="text" id="searchInput" placeholder='Search by name, e.g. "midnight blue"…' autocomplete="off" spellcheck="false">
-    <button class="clear-btn" id="clearBtn">
-      <svg width="14" height="14" viewBox="0 0 14 14"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </button>
+  <!-- Row 1: search + sort -->
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="search-wrap" style="flex:1;">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="11" y1="11" x2="14.5" y2="14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder='Search by name, e.g. "midnight blue"…' autocomplete="off" spellcheck="false">
+      <button class="clear-btn" id="clearBtn">
+        <svg width="14" height="14" viewBox="0 0 14 14"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <select class="sort-select" id="sortSelect">
+      <option value="hue">Hue</option>
+      <option value="name">Name A–Z</option>
+      <option value="lightness">Lightness</option>
+    </select>
   </div>
 
   <!-- Row 2: wheel + filters -->
@@ -223,7 +221,10 @@
     <!-- Picker panel -->
     <div class="picker-panel">
       <div class="picker-top">
-        <div id="pickerPreview"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;">
+          <div id="pickerPreview"></div>
+          <span id="pickerHexInput" style="font-size:11px;font-family:'SF Mono','Fira Code',monospace;color:#fff;font-weight:500;">#FF0000</span>
+        </div>
         <div class="picker-sliders">
           <div class="slider-group">
             <input type="range" class="hwb-slider" id="hueSlider" min="0" max="360" value="0">
@@ -237,16 +238,11 @@
             <input type="range" class="hwb-slider" id="blacknessSlider" min="0" max="100" value="0">
             <span class="slider-num" id="blacknessVal">0</span>
           </div>
+          <div class="slider-group">
+            <input type="range" class="hwb-slider" id="rangeSlider" min="0" max="10" value="5" step="1">
+            <span class="slider-num" id="rangeVal">5%</span>
+          </div>
         </div>
-      </div>
-      <div class="picker-hex-row">
-        <input type="text" id="pickerHexInput" value="#FF0000" maxlength="7" spellcheck="false">
-        <select class="sort-select" id="sortSelect">
-          <option value="default">Sort: Default</option>
-          <option value="name">Sort: Name A–Z</option>
-          <option value="hue">Sort: Hue</option>
-          <option value="lightness">Sort: Lightness</option>
-        </select>
       </div>
     </div>
 
@@ -279,7 +275,7 @@
   </button>
   <div class="detail-content detail-content-mobile">
     <div class="detail-name" id="detailName"></div>
-    <div class="detail-name-es" id="detailNameEs"></div>
+    <div class="detail-name-es" id="detailNameEs" style="display:none"></div>
     <div class="detail-section-label">Color Values</div>
     <div class="detail-values-grid">
       <div class="detail-value-row"><span class="detail-val-label">HEX</span><span class="detail-val-data hex-val" id="dHex"></span></div>
@@ -327,14 +323,15 @@ function colorDist(r1,g1,b1,r2,g2,b2){
   return 2*dr*dr+4*dg*dg+3*db*db;
 }
 
-let allColors=[],currentQuery='',currentPage=0,currentSort='default',filtered=[];
-let pickerMode=false,pickerRgb=[128,128,128];
+let allColors=[],currentQuery='',currentPage=0,currentSort='hue',filtered=[];
+let pickerMode=true,pickerRgb=[255,0,0];
 
 function init(){
-  allColors=RAW.filter(([,,good])=>good).map(([name,hex])=>{
+  allColors=RAW.filter(([name])=>name).map(([name,hex])=>{
     const [r,g,b]=hexToRgb(hex);
     const [h,s,l]=rgbToHsl(r,g,b);
-    return{name,hex,r,g,b,h,s,l,nameL:name.toLowerCase()};
+    const [hw,ww,bw]=rgbToHwb(r,g,b);
+    return{name,hex,r,g,b,h,s,l,hw,ww,bw,nameL:name.toLowerCase()};
   });
   document.getElementById('totalStat').innerHTML=
     `<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4.5" fill="none" stroke="currentColor" stroke-width="1"/></svg>${allColors.length.toLocaleString()} colors`;
@@ -345,21 +342,26 @@ function init(){
 
 function applyFilters(){
   if(pickerMode){
-    const [pr,pg,pb]=pickerRgb;
-    filtered=allColors
-      .filter(c=>{if(showGoodOnly&&!c.good)return false;return true;})
-      .map(c=>({...c,dist:colorDist(pr,pg,pb,c.r,c.g,c.b)}))
-      .sort((a,b)=>a.dist-b.dist);
+    const dH=pickerRange*3.6, dW=pickerRange, dB=pickerRange;
+    filtered=allColors.filter(c=>{
+      const hd=Math.min(Math.abs(c.hw-pickerH),360-Math.abs(c.hw-pickerH));
+      return hd<=dH && Math.abs(c.ww-pickerW)<=dW && Math.abs(c.bw-pickerB)<=dB;
+    });
+    filtered.sort((a,b)=>{
+      const ha=Math.min(Math.abs(a.hw-pickerH),360-Math.abs(a.hw-pickerH));
+      const hb=Math.min(Math.abs(b.hw-pickerH),360-Math.abs(b.hw-pickerH));
+      return (ha+Math.abs(a.ww-pickerW)+Math.abs(a.bw-pickerB))-(hb+Math.abs(b.ww-pickerW)+Math.abs(b.bw-pickerB));
+    });
   } else {
     const q=currentQuery.trim().toLowerCase();
     filtered=allColors.filter(c=>{
                   if(q&&!c.nameL.includes(q))return false;
       return true;
     });
-    if(currentSort==='name')filtered.sort((a,b)=>a.name.localeCompare(b.name));
-    else if(currentSort==='hue')filtered.sort((a,b)=>a.h-b.h||a.l-b.l);
-    else if(currentSort==='lightness')filtered.sort((a,b)=>a.l-b.l);
   }
+  if(currentSort==='name')filtered.sort((a,b)=>a.name.localeCompare(b.name));
+  else if(currentSort==='hue')filtered.sort((a,b)=>a.h-b.h||a.l-b.l);
+  else if(currentSort==='lightness')filtered.sort((a,b)=>a.l-b.l);
 }
 
 function render(){
@@ -377,7 +379,6 @@ function render(){
   } else {
     const frag=document.createDocumentFragment();
     slice.forEach((c,i)=>{
-      const [cc,cm,cy,ck]=rgbToCmyk(c.r,c.g,c.b);
       const card=document.createElement('div');
       card.className='color-card';
       card.innerHTML=`
@@ -386,11 +387,7 @@ function render(){
         </div>
         <div class="card-body">
           <div class="color-name" title="${c.name}">${c.name}</div>
-          <div class="color-values">
-            <div class="val-row"><span class="val-label">HEX</span><span class="val-data val-hex">${c.hex}</span></div>
-            <div class="val-row"><span class="val-label">RGB</span><span class="val-data">${c.r}, ${c.g}, ${c.b}</span></div>
-            <div class="val-row"><span class="val-label">CMYK</span><span class="val-data">${cc}, ${cm}, ${cy}, ${ck}</span></div>
-          </div>
+          <div class="color-hex">${c.hex}</div>
         </div>`;
       card.addEventListener('click',()=>openDetail(c));
       frag.appendChild(card);
@@ -418,361 +415,487 @@ function renderPagination(totalPages){
 
 // Phrase lookup first, then word-by-word
 const PHRASES_ES={
-  // ── Preposition phrases ──────────────────────────────────────────
-  ‘in the dark’:’en la oscuridad’,’in the night’:’en la noche’,’in the deep’:’en lo profundo’,
-  ‘in the mist’:’en la niebla’,’in the fog’:’en la niebla’,’in the rain’:’bajo la lluvia’,
-  ‘in the shadow’:’en la sombra’,’in the shade’:’a la sombra’,’in the light’:’a la luz’,
-  ‘in the fire’:’en el fuego’,’in the snow’:’en la nieve’,’in the storm’:’en la tormenta’,
-  ‘in the sky’:’en el cielo’,’in the void’:’en el vacío’,’in the wind’:’en el viento’,
-  ‘in the sun’:’bajo el sol’,’in the moon’:’bajo la luna’,
-  ‘at midnight’:’a medianoche’,’at dawn’:’al amanecer’,’at dusk’:’al atardecer’,
-  ‘at night’:’de noche’,’at sea’:’en el mar’,
-  ‘under the sea’:’bajo el mar’,’under the moon’:’bajo la luna’,’under the sun’:’bajo el sol’,
-  ‘over the rainbow’:’sobre el arcoíris’,
-  ‘by the sea’:’junto al mar’,’by the ocean’:’junto al océano’,’by the fire’:’junto al fuego’,
-  ‘out of the dark’:’fuera de la oscuridad’,
-  ‘into the dark’:’hacia la oscuridad’,’into the night’:’hacia la noche’,
-  ‘into the void’:’hacia el vacío’,’into the deep’:’hacia las profundidades’,
-  ‘beyond the dark’:’más allá de la oscuridad’,
-  ‘through the dark’:’a través de la oscuridad’,
-  ‘of the deep’:’de las profundidades’,’of the night’:’de la noche’,
-  ‘of the sea’:’del mar’,’of the sky’:’del cielo’,’of the earth’:’de la tierra’,
-  ‘before the dawn’:’antes del amanecer’,
-  ‘lost in space’:’perdido en el espacio’,’lost in’:’perdido en’,
-  ‘born in’:’nacido en’,’alone in the dark’:’solo en la oscuridad’,
-  // ── Specific poetic phrases ───────────────────────────────────────
-  ‘long-haul flight’:’vuelo de larga distancia’,’long haul flight’:’vuelo de larga distancia’,
-  ‘one minute to midnight’:’un minuto para la medianoche’,
-  ‘too dark tonight’:’demasiado oscuro esta noche’,
-  ‘dark galaxy’:’galaxia oscura’,’dark matter’:’materia oscura’,
-  ‘secret of mana’:’secreto de maná’,’mana tree’:’árbol de maná’,
-  ‘kiss of a vampire’:’beso de vampiro’,
-  ‘la vie en rose’:’la vida en rosa’,
-  ‘la luna’:’la luna’,’la palma’:’la palma’,
-  ‘la la love’:’amor amor’,
-  ‘bonne nuit’:’buenas noches’,
-  ‘les demoiselles’:’las señoritas’,
-  ‘choux a la creme’:’profiteroles de crema’,’choux à la crème’:’profiteroles de crema’,
-  ‘creme de la creme’:’crema de la crema’,’crème de la crème’:’crema de la crema’,
-  ‘crème de pêche’:’crema de melocotón’,’creme de peche’:’crema de melocotón’,
-  ‘crème fraîche’:’crema fresca’,’creme fraiche’:’crema fresca’,
-  ‘crème brûlée’:’crema quemada’,’creme brulee’:’crema quemada’,
-  ‘peach crème brûlée’:’crema quemada de melocotón’,
-  ‘café au lait’:’café con leche’,’cafe au lait’:’café con leche’,
-  ‘café crème’:’café crema’,’cafe creme’:’café crema’,
-  ‘café noir’:’café negro’,’cafe noir’:’café negro’,
-  ‘délicieux au chocolat’:’delicioso de chocolate’,
-  ‘moelleux au chocolat’:’bizcocho de chocolate’,
-  ‘frappé au chocolat’:’frappé de chocolate’,’frappe au chocolat’:’frappé de chocolate’,
-  ‘beurre blanc’:’mantequilla blanca’,
-  ‘blanc cassé’:’blanco roto’,
-  ‘nuit blanche’:’noche blanca’,
-  ‘grand bleu’:’gran azul’,’le grand bleu’:’el gran azul’,’bleu ciel’:’azul cielo’,
-  ‘grand sunset’:’gran atardecer’,’grand casino gold’:’gran casino dorado’,
-  ‘muscat blanc’:’moscatel blanco’,
-  ‘pinot noir’:’pinot noir’,
-  ‘film noir’:’cine negro’,’nordic noir’:’noir nórdico’,
-  ‘rustic rouge’:’rojo rústico’,’smooch rouge’:’beso rojo’,
-  ‘mont blanc’:’Mont Blanc’,
-  ‘la vibes’:’vibras de la ciudad’,
-  ‘gun powder’:’pólvora’,’gunpowder’:’pólvora’,
-  ‘cherry blossom’:’flor de cerezo’,
-  ‘cotton candy’:’algodón de azúcar’,
-  ‘candy apple’:’manzana de caramelo’,
-  ‘blood orange’:’naranja sangre’,’blood red’:’rojo sangre’,
-  ‘fire red’:’rojo fuego’,’fire orange’:’naranja fuego’,
-  // ── Midnight + color ─────────────────────────────────────────────
-  ‘midnight blue’:’azul medianoche’,’midnight black’:’negro medianoche’,
-  ‘midnight green’:’verde medianoche’,’midnight purple’:’morado medianoche’,
-  ‘midnight red’:’rojo medianoche’,’midnight gray’:’gris medianoche’,
-  ‘midnight grey’:’gris medianoche’,’midnight teal’:’verde azulado medianoche’,
-  // ── Dark + color ──────────────────────────────────────────────────
-  ‘dark blue’:’azul oscuro’,’dark green’:’verde oscuro’,’dark red’:’rojo oscuro’,
-  ‘dark gray’:’gris oscuro’,’dark grey’:’gris oscuro’,’dark brown’:’marrón oscuro’,
-  ‘dark purple’:’morado oscuro’,’dark pink’:’rosa oscuro’,’dark orange’:’naranja oscuro’,
-  ‘dark violet’:’violeta oscuro’,’dark cyan’:’cian oscuro’,’dark teal’:’verde azulado oscuro’,
-  ‘dark magenta’:’magenta oscuro’,’dark coral’:’coral oscuro’,’dark lime’:’lima oscura’,
-  ‘dark olive’:’oliva oscura’,’dark amber’:’ámbar oscuro’,’dark gold’:’dorado oscuro’,
-  ‘dark lavender’:’lavanda oscura’,’dark lilac’:’lila oscura’,’dark peach’:’durazno oscuro’,
-  ‘dark rose’:’rosa oscura’,’dark maroon’:’granate oscuro’,’dark emerald’:’esmeralda oscura’,
-  ‘dark turquoise’:’turquesa oscura’,’dark crimson’:’carmesí oscuro’,
-  ‘dark scarlet’:’escarlata oscura’,’dark ruby’:’rubí oscuro’,’dark navy’:’azul marino oscuro’,
-  ‘dark chocolate’:’chocolate oscuro’,’dark sky’:’cielo oscuro’,
-  // ── Light + color ─────────────────────────────────────────────────
-  ‘light blue’:’azul claro’,’light green’:’verde claro’,’light gray’:’gris claro’,
-  ‘light grey’:’gris claro’,’light pink’:’rosa claro’,’light yellow’:’amarillo claro’,
-  ‘light brown’:’marrón claro’,’light teal’:’verde azulado claro’,
-  ‘light violet’:’violeta claro’,’light coral’:’coral claro’,
-  ‘light lavender’:’lavanda clara’,’light olive’:’oliva clara’,
-  ‘light amber’:’ámbar claro’,’light rose’:’rosa clara’,’light peach’:’durazno claro’,
-  ‘light lime’:’lima clara’,’light cyan’:’cian claro’,’light magenta’:’magenta claro’,
-  ‘light turquoise’:’turquesa clara’,’light purple’:’morado claro’,
-  // ── Deep + color ──────────────────────────────────────────────────
-  ‘deep sea’:’mar profundo’,’deep sky’:’cielo profundo’,’deep blue’:’azul profundo’,
-  ‘deep red’:’rojo profundo’,’deep green’:’verde profundo’,’deep purple’:’morado profundo’,
-  ‘deep teal’:’verde azulado profundo’,’deep violet’:’violeta profundo’,
-  ‘deep pink’:’rosa profundo’,’deep orange’:’naranja profundo’,
-  ‘deep coral’:’coral profundo’,’deep gold’:’dorado profundo’,
-  // ── Pale + color ──────────────────────────────────────────────────
-  ‘pale blue’:’azul pálido’,’pale green’:’verde pálido’,’pale pink’:’rosa pálido’,
-  ‘pale yellow’:’amarillo pálido’,’pale purple’:’morado pálido’,
-  ‘pale violet’:’violeta pálido’,’pale lavender’:’lavanda pálida’,
-  ‘pale rose’:’rosa pálida’,’pale gold’:’dorado pálido’,’pale coral’:’coral pálido’,
-  ‘pale peach’:’durazno pálido’,’pale gray’:’gris pálido’,’pale grey’:’gris pálido’,
-  ‘pale teal’:’verde azulado pálido’,’pale cyan’:’cian pálido’,
-  // ── Neon + color ──────────────────────────────────────────────────
-  ‘neon green’:’verde neón’,’neon pink’:’rosa neón’,’neon blue’:’azul neón’,
-  ‘neon yellow’:’amarillo neón’,’neon orange’:’naranja neón’,’neon purple’:’morado neón’,
-  ‘neon red’:’rojo neón’,’neon coral’:’coral neón’,’neon teal’:’verde azulado neón’,
-  ‘neon magenta’:’magenta neón’,’neon cyan’:’cian neón’,
-  // ── Electric + color ──────────────────────────────────────────────
-  ‘electric blue’:’azul eléctrico’,’electric green’:’verde eléctrico’,
-  ‘electric purple’:’morado eléctrico’,’electric pink’:’rosa eléctrico’,
-  ‘electric yellow’:’amarillo eléctrico’,’electric red’:’rojo eléctrico’,
-  ‘electric orange’:’naranja eléctrico’,’electric teal’:’verde azulado eléctrico’,
-  ‘electric violet’:’violeta eléctrico’,
-  // ── Pastel + color ────────────────────────────────────────────────
-  ‘pastel blue’:’azul pastel’,’pastel green’:’verde pastel’,’pastel pink’:’rosa pastel’,
-  ‘pastel yellow’:’amarillo pastel’,’pastel purple’:’morado pastel’,
-  ‘pastel violet’:’violeta pastel’,’pastel orange’:’naranja pastel’,
-  ‘pastel lavender’:’lavanda pastel’,’pastel teal’:’verde azulado pastel’,
-  ‘pastel coral’:’coral pastel’,’pastel peach’:’durazno pastel’,
-  // ── Royal + color ─────────────────────────────────────────────────
-  ‘navy blue’:’azul marino’,’royal blue’:’azul real’,’royal purple’:’morado real’,
-  ‘royal green’:’verde real’,’royal red’:’rojo real’,
-  // ── Other paired colors ───────────────────────────────────────────
-  ‘sky blue’:’azul cielo’,’ocean blue’:’azul océano’,’steel blue’:’azul acero’,
-  ‘ice blue’:’azul hielo’,’ice green’:’verde hielo’,’frost blue’:’azul escarcha’,
-  ‘powder blue’:’azul polvo’,’powder pink’:’rosa polvo’,
-  ‘baby blue’:’azul bebé’,’baby pink’:’rosa bebé’,
-  ‘hot pink’:’rosa intenso’,’hot red’:’rojo ardiente’,
-  ‘golden yellow’:’amarillo dorado’,’golden brown’:’marrón dorado’,
-  ‘golden orange’:’naranja dorado’,
-  ‘forest green’:’verde bosque’,’olive green’:’verde oliva’,’mint green’:’verde menta’,
-  ‘moss green’:’verde musgo’,’pine green’:’verde pino’,
-  ‘lime green’:’verde lima’,’sage green’:’verde salvia’,
-  ‘stormy blue’:’azul tormentoso’,’stormy gray’:’gris tormentoso’,
-  ‘stormy grey’:’gris tormentoso’,
-  ‘cherry red’:’rojo cereza’,’strawberry red’:’rojo fresa’,’strawberry pink’:’rosa fresa’,
-  ‘rose gold’:’oro rosado’,’rose red’:’rojo rosa’,
-  ‘milk chocolate’:’chocolate con leche’,’hot chocolate’:’chocolate caliente’,
-  ‘chocolate brown’:’marrón chocolate’,
+  // Preposition phrases
+  'in the dark':'en la oscuridad','in the night':'en la noche','in the deep':'en lo profundo',
+  'in the mist':'en la niebla','in the fog':'en la niebla','in the rain':'bajo la lluvia',
+  'in the shadow':'en la sombra','in the shade':'a la sombra','in the light':'a la luz',
+  'in the fire':'en el fuego','in the snow':'en la nieve','in the storm':'en la tormenta',
+  'in the sky':'en el cielo','in the void':'en el vacío','in the wind':'en el viento',
+  'in the sun':'bajo el sol','in the moon':'bajo la luna',
+  'at midnight':'a medianoche','at dawn':'al amanecer','at dusk':'al atardecer',
+  'at night':'de noche','at sea':'en el mar',
+  'under the sea':'bajo el mar','under the moon':'bajo la luna','under the sun':'bajo el sol',
+  'over the rainbow':'sobre el arcoíris',
+  'by the sea':'junto al mar','by the ocean':'junto al océano','by the fire':'junto al fuego',
+  'out of the dark':'fuera de la oscuridad',
+  'into the dark':'hacia la oscuridad','into the night':'hacia la noche',
+  'into the void':'hacia el vacío','into the deep':'hacia las profundidades',
+  'beyond the dark':'más allá de la oscuridad',
+  'through the dark':'a través de la oscuridad',
+  'of the deep':'de las profundidades','of the night':'de la noche',
+  'of the sea':'del mar','of the sky':'del cielo','of the earth':'de la tierra',
+  'before the dawn':'antes del amanecer',
+  'lost in space':'perdido en el espacio','lost in':'perdido en',
+  'born in':'nacido en','alone in the dark':'solo en la oscuridad',
+  // Specific poetic phrases
+  'long-haul flight':'vuelo de larga distancia','long haul flight':'vuelo de larga distancia',
+  'one minute to midnight':'un minuto para la medianoche',
+  'too dark tonight':'demasiado oscuro esta noche',
+  'dark galaxy':'galaxia oscura','dark matter':'materia oscura',
+  'secret of mana':'secreto de maná','mana tree':'árbol de maná',
+  'kiss of a vampire':'beso de vampiro',
+  'la vie en rose':'la vida en rosa',
+  'la luna':'la luna','la palma':'la palma',
+  'la la love':'amor amor',
+  'bonne nuit':'buenas noches',
+  'les demoiselles':'las señoritas',
+  'choux a la creme':'profiteroles de crema','choux à la crème':'profiteroles de crema',
+  'creme de la creme':'crema de la crema','crème de la crème':'crema de la crema',
+  'crème de pêche':'crema de melocotón','creme de peche':'crema de melocotón',
+  'crème fraîche':'crema fresca','creme fraiche':'crema fresca',
+  'crème brûlée':'crema quemada','creme brulee':'crema quemada',
+  'peach crème brûlée':'crema quemada de melocotón',
+  'café au lait':'café con leche','cafe au lait':'café con leche',
+  'café crème':'café crema','cafe creme':'café crema',
+  'café noir':'café negro','cafe noir':'café negro',
+  'délicieux au chocolat':'delicioso de chocolate',
+  'moelleux au chocolat':'bizcocho de chocolate',
+  'frappé au chocolat':'frappé de chocolate','frappe au chocolat':'frappé de chocolate',
+  'beurre blanc':'mantequilla blanca',
+  'blanc cassé':'blanco roto',
+  'nuit blanche':'noche blanca',
+  'grand bleu':'gran azul','le grand bleu':'el gran azul','bleu ciel':'azul cielo',
+  'grand sunset':'gran atardecer','grand casino gold':'gran casino dorado',
+  'muscat blanc':'moscatel blanco',
+  'pinot noir':'pinot noir',
+  'film noir':'cine negro','nordic noir':'noir nórdico',
+  'rustic rouge':'rojo rústico','smooch rouge':'beso rojo',
+  'mont blanc':'Mont Blanc',
+  'la vibes':'vibras de la ciudad',
+  'ghost town':'ciudad fantasma','ghost ship':'barco fantasma',
+  'midsummer night':'noche de pleno verano','midsummer nights':'noches de pleno verano',
+  'gun powder':'pólvora','gunpowder':'pólvora',
+  'cherry blossom':'flor de cerezo',
+  'cotton candy':'algodón de azúcar',
+  'candy apple':'manzana de caramelo',
+  'blood orange':'naranja sangre','blood red':'rojo sangre',
+  'fire red':'rojo fuego','fire orange':'naranja fuego',
+  // Midnight + color
+  'midnight blue':'azul medianoche','midnight black':'negro medianoche',
+  'midnight green':'verde medianoche','midnight purple':'morado medianoche',
+  'midnight red':'rojo medianoche','midnight gray':'gris medianoche',
+  'midnight grey':'gris medianoche','midnight teal':'verde azulado medianoche',
+  // Dark + color
+  'dark blue':'azul oscuro','dark green':'verde oscuro','dark red':'rojo oscuro',
+  'dark gray':'gris oscuro','dark grey':'gris oscuro','dark brown':'marrón oscuro',
+  'dark purple':'morado oscuro','dark pink':'rosa oscuro','dark orange':'naranja oscuro',
+  'dark violet':'violeta oscuro','dark cyan':'cian oscuro','dark teal':'verde azulado oscuro',
+  'dark magenta':'magenta oscuro','dark coral':'coral oscuro','dark lime':'lima oscura',
+  'dark olive':'oliva oscura','dark amber':'ámbar oscuro','dark gold':'dorado oscuro',
+  'dark lavender':'lavanda oscura','dark lilac':'lila oscura','dark peach':'durazno oscuro',
+  'dark rose':'rosa oscura','dark maroon':'granate oscuro','dark emerald':'esmeralda oscura',
+  'dark turquoise':'turquesa oscura','dark crimson':'carmesí oscuro',
+  'dark scarlet':'escarlata oscura','dark ruby':'rubí oscuro','dark navy':'azul marino oscuro',
+  'dark chocolate':'chocolate oscuro','dark sky':'cielo oscuro',
+  // Light + color
+  'light blue':'azul claro','light green':'verde claro','light gray':'gris claro',
+  'light grey':'gris claro','light pink':'rosa claro','light yellow':'amarillo claro',
+  'light brown':'marrón claro','light teal':'verde azulado claro',
+  'light violet':'violeta claro','light coral':'coral claro',
+  'light lavender':'lavanda clara','light olive':'oliva clara',
+  'light amber':'ámbar claro','light rose':'rosa clara','light peach':'durazno claro',
+  'light lime':'lima clara','light cyan':'cian claro','light magenta':'magenta claro',
+  'light turquoise':'turquesa clara','light purple':'morado claro',
+  // Deep + color
+  'deep sea':'mar profundo','deep sky':'cielo profundo','deep blue':'azul profundo',
+  'deep red':'rojo profundo','deep green':'verde profundo','deep purple':'morado profundo',
+  'deep teal':'verde azulado profundo','deep violet':'violeta profundo',
+  'deep pink':'rosa profundo','deep orange':'naranja profundo',
+  'deep coral':'coral profundo','deep gold':'dorado profundo',
+  // Pale + color
+  'pale blue':'azul pálido','pale green':'verde pálido','pale pink':'rosa pálido',
+  'pale yellow':'amarillo pálido','pale purple':'morado pálido',
+  'pale violet':'violeta pálido','pale lavender':'lavanda pálida',
+  'pale rose':'rosa pálida','pale gold':'dorado pálido','pale coral':'coral pálido',
+  'pale peach':'durazno pálido','pale gray':'gris pálido','pale grey':'gris pálido',
+  'pale teal':'verde azulado pálido','pale cyan':'cian pálido',
+  // Neon + color
+  'neon green':'verde neón','neon pink':'rosa neón','neon blue':'azul neón',
+  'neon yellow':'amarillo neón','neon orange':'naranja neón','neon purple':'morado neón',
+  'neon red':'rojo neón','neon coral':'coral neón','neon teal':'verde azulado neón',
+  'neon magenta':'magenta neón','neon cyan':'cian neón',
+  // Electric + color
+  'electric blue':'azul eléctrico','electric green':'verde eléctrico',
+  'electric purple':'morado eléctrico','electric pink':'rosa eléctrico',
+  'electric yellow':'amarillo eléctrico','electric red':'rojo eléctrico',
+  'electric orange':'naranja eléctrico','electric teal':'verde azulado eléctrico',
+  'electric violet':'violeta eléctrico',
+  // Pastel + color
+  'pastel blue':'azul pastel','pastel green':'verde pastel','pastel pink':'rosa pastel',
+  'pastel yellow':'amarillo pastel','pastel purple':'morado pastel',
+  'pastel violet':'violeta pastel','pastel orange':'naranja pastel',
+  'pastel lavender':'lavanda pastel','pastel teal':'verde azulado pastel',
+  'pastel coral':'coral pastel','pastel peach':'durazno pastel',
+  // Royal + color
+  'navy blue':'azul marino','royal blue':'azul real','royal purple':'morado real',
+  'royal green':'verde real','royal red':'rojo real',
+  // Other paired colors
+  'sky blue':'azul cielo','ocean blue':'azul océano','steel blue':'azul acero',
+  'ice blue':'azul hielo','ice green':'verde hielo','frost blue':'azul escarcha',
+  'powder blue':'azul polvo','powder pink':'rosa polvo',
+  'baby blue':'azul bebé','baby pink':'rosa bebé',
+  'hot pink':'rosa intenso','hot red':'rojo ardiente',
+  'golden yellow':'amarillo dorado','golden brown':'marrón dorado',
+  'golden orange':'naranja dorado',
+  'forest green':'verde bosque','olive green':'verde oliva','mint green':'verde menta',
+  'moss green':'verde musgo','pine green':'verde pino',
+  'lime green':'verde lima','sage green':'verde salvia',
+  'stormy blue':'azul tormentoso','stormy gray':'gris tormentoso',
+  'stormy grey':'gris tormentoso',
+  'cherry red':'rojo cereza','strawberry red':'rojo fresa','strawberry pink':'rosa fresa',
+  'rose gold':'oro rosado','rose red':'rojo rosa',
+  'milk chocolate':'chocolate con leche','hot chocolate':'chocolate caliente',
+  'chocolate brown':'marrón chocolate',
 };
 
 const WORDS_ES={
-  // ── Articles / prepositions ───────────────────────────────────────
-  ‘the’:’’,’a’:’’,’an’:’’,’of’:’de’,’in’:’en’,’on’:’en’,’at’:’en’,’by’:’por’,
-  ‘for’:’para’,’with’:’con’,’and’:’y’,’to’:’a’,’from’:’de’,’into’:’en’,
-  ‘through’:’a través’,’under’:’bajo’,’over’:’sobre’,’between’:’entre’,
-  ‘beyond’:’más allá’,’without’:’sin’,’above’:’sobre’,’below’:’bajo’,
-  ‘around’:’alrededor’,’within’:’dentro’,’out’:’fuera’,
-  // ── French articles/prepositions (omit or translate) ─────────────
-  ‘le’:’’,’la’:’’,’les’:’’,’du’:’de’,’des’:’de’,’au’:’con’,
-  ‘noir’:’negro’,’rouge’:’rojo’,’bleu’:’azul’,’blanc’:’blanco’,
-  ‘nuit’:’noche’,’lait’:’leche’,’grand’:’gran’,’moelleux’:’suave’,
-  // ── Colors ────────────────────────────────────────────────────────
-  ‘black’:’negro’,’white’:’blanco’,’red’:’rojo’,’blue’:’azul’,’green’:’verde’,
-  ‘yellow’:’amarillo’,’orange’:’naranja’,’purple’:’morado’,’pink’:’rosa’,
-  ‘brown’:’marrón’,’gray’:’gris’,’grey’:’gris’,’violet’:’violeta’,’indigo’:’índigo’,
-  ‘turquoise’:’turquesa’,’teal’:’verde azulado’,’coral’:’coral’,’salmon’:’salmón’,
-  ‘magenta’:’magenta’,’crimson’:’carmesí’,’scarlet’:’escarlata’,’navy’:’azul marino’,
-  ‘olive’:’oliva’,’lime’:’lima’,’mint’:’menta’,’aqua’:’agua’,’cyan’:’cian’,
-  ‘lavender’:’lavanda’,’lilac’:’lila’,’amber’:’ámbar’,’copper’:’cobre’,
-  ‘bronze’:’bronce’,’rust’:’óxido’,’gold’:’dorado’,’silver’:’plateado’,
-  ‘ivory’:’marfil’,’cream’:’crema’,’rose’:’rosa’,’peach’:’durazno’,’plum’:’ciruela’,
-  ‘cherry’:’cereza’,’wine’:’vino’,’grape’:’uva’,’lemon’:’limón’,’apricot’:’albaricoque’,
-  ‘emerald’:’esmeralda’,’ruby’:’rubí’,’sapphire’:’zafiro’,’jade’:’jade’,
-  ‘pearl’:’perla’,’opal’:’ópalo’,’topaz’:’topacio’,’diamond’:’diamante’,
-  ‘fuchsia’:’fucsia’,’mauve’:’malva’,’maroon’:’granate’,’ochre’:’ocre’,
-  ‘beige’:’beige’,’taupe’:’pardo’,’khaki’:’caqui’,’tan’:’tostado’,
-  ‘chartreuse’:’chartreuse’,’vermilion’:’bermellón’,’sienna’:’siena’,
-  ‘sepia’:’sepia’,’ecru’:’crudo’,’bisque’:’bisque’,
-  ‘golden’:’dorado’,’blush’:’sonrosado’,
-  // ── Food & drinks ─────────────────────────────────────────────────
-  ‘chocolate’:’chocolate’,’banana’:’plátano’,’milk’:’leche’,’butter’:’mantequilla’,
-  ‘candy’:’dulce’,’sugar’:’azúcar’,’caramel’:’caramelo’,’strawberry’:’fresa’,
-  ‘honey’:’miel’,’coffee’:’café’,’cheese’:’queso’,’tomato’:’tomate’,
-  ‘mango’:’mango’,’vanilla’:’vainilla’,’pineapple’:’piña’,’carrot’:’zanahoria’,
-  ‘apple’:’manzana’,’tea’:’té’,’cookie’:’galleta’,’raspberry’:’frambuesa’,
-  ‘mocha’:’moca’,’coconut’:’coco’,’saffron’:’azafrán’,’melon’:’melón’,
-  ‘pumpkin’:’calabaza’,’champagne’:’champán’,’corn’:’maíz’,’kiwi’:’kiwi’,
-  ‘pistachio’:’pistacho’,’mustard’:’mostaza’,’marshmallow’:’malvavisco’,
-  ‘bread’:’pan’,’garlic’:’ajo’,’celery’:’apio’,’fennel’:’hinojo’,
-  ‘truffle’:’trufa’,’whiskey’:’whisky’,’whisky’:’whisky’,’latte’:’latte’,
-  ‘frapp’:’frappé’,’frappe’:’frappé’,’nacho’:’nacho’,’pasta’:’pasta’,
-  ‘egg’:’huevo’,’gum’:’goma’,’pesto’:’pesto’,’espresso’:’espresso’,
-  ‘crme’:’crema’,’creme’:’crema’,’vanilla’:’vainilla’,
-  ‘peanut’:’maní’,’chili’:’chile’,’chilli’:’chile’,’cinnamon’:’canela’,
-  ‘ginger’:’jengibre’,’curry’:’curry’,’pepper’:’pimienta’,’spice’:’especia’,
-  ‘toast’:’tostado’,’cake’:’pastel’,’pie’:’pastel’,’bread’:’pan’,
-  ‘cookie’:’galleta’,’biscuit’:’galleta’,’waffle’:’gofre’,
-  ‘lemon’:’limón’,’lime’:’lima’,’orange’:’naranja’,’cherry’:’cereza’,
-  ‘blueberry’:’arándano’,’blackberry’:’zarzamora’,’gooseberry’:’grosella’,
-  ‘watermelon’:’sandía’,’cantaloupe’:’melón’,’papaya’:’papaya’,
-  ‘mango’:’mango’,’guava’:’guayaba’,’fig’:’higo’,’plum’:’ciruela’,
-  ‘peach’:’durazno’,’apricot’:’albaricoque’,’nectarine’:’nectarina’,
-  ‘pomegranate’:’granada’,’passionfruit’:’maracuyá’,
-  ‘toffee’:’toffee’,’caramel’:’caramelo’,’butterscotch’:’caramelo de mantequilla’,
-  ‘nougat’:’nougat’,’praline’:’praliné’,’marzipan’:’mazapán’,
-  ‘meringue’:’merengue’,’mousse’:’mousse’,’cream’:’crema’,
-  // ── Nature ────────────────────────────────────────────────────────
-  ‘sky’:’cielo’,’ocean’:’océano’,’sea’:’mar’,’lake’:’lago’,’river’:’río’,
-  ‘forest’:’bosque’,’jungle’:’selva’,’desert’:’desierto’,’mountain’:’montaña’,
-  ‘valley’:’valle’,’earth’:’tierra’,’mud’:’barro’,’clay’:’arcilla’,’sand’:’arena’,
-  ‘stone’:’piedra’,’rock’:’roca’,’dust’:’polvo’,’ash’:’ceniza’,’fire’:’fuego’,
-  ‘flame’:’llama’,’ember’:’brasa’,’smoke’:’humo’,’water’:’agua’,’ice’:’hielo’,
-  ‘snow’:’nieve’,’frost’:’escarcha’,’rain’:’lluvia’,’mist’:’niebla’,’fog’:’niebla’,
-  ‘cloud’:’nube’,’storm’:’tormenta’,’thunder’:’trueno’,’wind’:’viento’,
-  ‘breeze’:’brisa’,’sun’:’sol’,’moon’:’luna’,’star’:’estrella’,’galaxy’:’galaxia’,
-  ‘space’:’espacio’,’cosmos’:’cosmos’,’universe’:’universo’,
-  ‘night’:’noche’,’day’:’día’,’midnight’:’medianoche’,’dawn’:’amanecer’,
-  ‘dusk’:’crepúsculo’,’sunset’:’atardecer’,’morning’:’mañana’,’evening’:’tarde’,
-  ‘twilight’:’penumbra’,’moonlight’:’luz de luna’,’starlight’:’luz de estrellas’,
-  ‘sunlight’:’luz del sol’,’firelight’:’luz del fuego’,
-  ‘aurora’:’aurora’,’eclipse’:’eclipse’,’horizon’:’horizonte’,
-  ‘moss’:’musgo’,’grass’:’hierba’,’leaf’:’hoja’,’leaves’:’hojas’,
-  ‘flower’:’flor’,’petal’:’pétalo’,’bark’:’corteza’,’wood’:’madera’,
-  ‘garden’:’jardín’,’gardens’:’jardines’,’meadow’:’pradera’,’prairie’:’pradera’,
-  ‘woodland’:’bosque’,’highland’:’tierras altas’,’highlands’:’tierras altas’,
-  ‘beach’:’playa’,’island’:’isla’,’bay’:’bahía’,’harbor’:’puerto’,
-  ‘lagoon’:’laguna’,’pond’:’estanque’,’pool’:’piscina’,’tide’:’marea’,
-  ‘wave’:’ola’,’waters’:’aguas’,’seas’:’mares’,’depths’:’profundidades’,
-  ‘cave’:’cueva’,’canyon’:’cañón’,’cliff’:’acantilado’,’dune’:’duna’,
-  ‘tundra’:’tundra’,’glacier’:’glaciar’,’arctic’:’ártico’,’tropical’:’tropical’,
-  ‘pacific’:’pacífico’,’atlantic’:’atlántico’,
-  ‘clover’:’trébol’,’lily’:’lirio’,’orchid’:’orquídea’,’poppy’:’amapola’,
-  ‘ivy’:’hiedra’,’wisteria’:’glicinia’,’pine’:’pino’,’sunflower’:’girasol’,
-  ‘blossom’:’flor’,’bloom’:’flor’,’bud’:’brote’,’tree’:’árbol’,’branch’:’rama’,
-  ‘seed’:’semilla’,’root’:’raíz’,’fern’:’helecho’,’thistle’:’cardo’,
-  ‘lavender’:’lavanda’,’sage’:’salvia’,’thyme’:’tomillo’,’rosemary’:’romero’,
-  ‘cedar’:’cedro’,’oak’:’roble’,’birch’:’abedul’,’willow’:’sauce’,
-  ‘blood’:’sangre’,’bone’:’hueso’,’skin’:’piel’,
-  // ── Materials & textures ──────────────────────────────────────────
-  ‘velvet’:’terciopelo’,’silk’:’seda’,’steel’:’acero’,’iron’:’hierro’,
-  ‘crystal’:’cristal’,’glass’:’vidrio’,’mirror’:’espejo’,
-  ‘porcelain’:’porcelana’,’marble’:’mármol’,’granite’:’granito’,
-  ‘concrete’:’concreto’,’asphalt’:’asfalto’,’charcoal’:’carbón’,
-  ‘ink’:’tinta’,’denim’:’mezclilla’,’wool’:’lana’,’cotton’:’algodón’,
-  ‘satin’:’satén’,’linen’:’lino’,’cashmere’:’cachemira’,
-  ‘leather’:’cuero’,’metal’:’metal’,’chrome’:’cromo’,’brass’:’latón’,
-  ‘platinum’:’platino’,’titanium’:’titanio’,
-  // ── Modifiers ─────────────────────────────────────────────────────
-  ‘deep’:’profundo’,’pale’:’pálido’,’bright’:’brillante’,’vivid’:’vívido’,
-  ‘muted’:’apagado’,’warm’:’cálido’,’cool’:’fresco’,’hot’:’caliente’,
-  ‘cold’:’frío’,’soft’:’suave’,’pure’:’puro’,’rich’:’rico’,’true’:’verdadero’,
-  ‘electric’:’eléctrico’,’royal’:’real’,’imperial’:’imperial’,’noble’:’noble’,
-  ‘neon’:’neón’,’dark’:’oscuro’,’light’:’luz’,
-  ‘vibrant’:’vibrante’,’radiant’:’radiante’,’ethereal’:’etéreo’,
-  ‘majestic’:’majestuoso’,’opulent’:’opulento’,’verdant’:’frondoso’,
-  ‘lush’:’exuberante’,’fresh’:’fresco’,’misty’:’neblinoso’,
-  ‘frosted’:’escarchado’,’frozen’:’congelado’,’stormy’:’tormentoso’,
-  ‘creamy’:’cremoso’,’silky’:’sedoso’,’polished’:’pulido’,’metallic’:’metálico’,
-  ‘matt’:’mate’,’mellow’:’suave’,’muddy’:’fangoso’,’heavy’:’pesado’,
-  ‘bold’:’audaz’,’vivid’:’vívido’,’pastel’:’pastel’,’leafy’:’frondoso’,
-  ‘tropical’:’tropical’,’galactic’:’galáctico’,’cosmic’:’cósmico’,
-  ‘oceanic’:’oceánico’,’botanical’:’botánico’,’nocturne’:’nocturno’,
-  ‘lunar’:’lunar’,’solar’:’solar’,’atomic’:’atómico’,’nuclear’:’nuclear’,
-  ‘toxic’:’tóxico’,’acid’:’ácido’,’acidic’:’ácido’,’ancient’:’antiguo’,
-  ‘pristine’:’prístino’,’homeopathic’:’homeopático’,’intergalactic’:’intergaláctico’,
-  ‘celestial’:’celestial’,’divine’:’divino’,’holy’:’sagrado’,
-  ‘iridescent’:’iridiscente’,’luminous’:’luminoso’,’saturated’:’saturado’,
-  ‘rustic’:’rústico’,’exotic’:’exótico’,’vintage’:’vintage’,
-  ‘delicate’:’delicado’,’romantic’:’romántico’,’natural’:’natural’,
-  ‘liquid’:’líquido’,’precious’:’precioso’,’flaming’:’llameante’,
-  ‘overgrown’:’exuberante’,’polar’:’polar’,’silken’:’sedoso’,
-  ‘powdered’:’en polvo’,’high’:’alto’,’super’:’súper’,’big’:’gran’,
-  ‘little’:’pequeño’,’pretty’:’bonito’,’happy’:’feliz’,’lucky’:’afortunado’,
-  ‘good’:’bueno’,’young’:’joven’,’old’:’viejo’,
-  // ── Adjectives (qualities) ────────────────────────────────────────
-  ‘alone’:’solo’,’lost’:’perdido’,’forgotten’:’olvidado’,’haunted’:’embrujado’,
-  ‘enchanted’:’encantado’,’hidden’:’oculto’,’secret’:’secreto’,
-  ‘mysterious’:’misterioso’,’eternal’:’eterno’,’infinite’:’infinito’,
-  ‘vast’:’vasto’,’burning’:’ardiente’,’fading’:’desvanecido’,
-  ‘shining’:’brillante’,’glowing’:’luminoso’,’sparkling’:’chispeante’,
-  ‘glittering’:’reluciente’,’broken’:’roto’,’wild’:’salvaje’,’serene’:’sereno’,
-  ‘silent’:’silencioso’,’calm’:’calmo’,’fierce’:’feroz’,’gentle’:’suave’,
-  ‘bitter’:’amargo’,’sweet’:’dulce’,’sour’:’ácido’,’still’:’quieto’,
-  ‘empty’:’vacío’,’hollow’:’hueco’,’void’:’vacío’,’darkness’:’oscuridad’,
-  ‘shadow’:’sombra’,’shade’:’sombra’,’haze’:’neblina’,’blur’:’difuso’,
-  ‘glow’:’resplandor’,’gleam’:’destello’,’shimmer’:’brillo’,’sheen’:’lustre’,
-  ‘fury’:’furia’,’fierce’:’feroz’,’furious’:’furioso’,’ferocious’:’feroz’,
-  ‘spicy’:’picante’,’salty’:’salado’,’bitter’:’amargo’,
-  // ── Animals ───────────────────────────────────────────────────────
-  ‘flamingo’:’flamenco’,’frog’:’rana’,’whale’:’ballena’,’fox’:’zorro’,
-  ‘tiger’:’tigre’,’bear’:’oso’,’lion’:’león’,’dragon’:’dragón’,
-  ‘fish’:’pez’,’shark’:’tiburón’,’duck’:’pato’,’serpent’:’serpiente’,
-  ‘lizard’:’lagarto’,’cat’:’gato’,’wolf’:’lobo’,’deer’:’ciervo’,
-  ‘rabbit’:’conejo’,’butterfly’:’mariposa’,’bee’:’abeja’,’moth’:’polilla’,
-  ‘crane’:’grulla’,’hawk’:’halcón’,’raven’:’cuervo’,’peacock’:’pavo real’,
-  ‘elk’:’alce’,’elk’:’alce’,’hummingbird’:’colibrí’,
-  // ── People / roles ────────────────────────────────────────────────
-  ‘kiss’:’beso’,’kisses’:’besos’,’king’:’rey’,’queen’:’reina’,
-  ‘princess’:’princesa’,’knight’:’caballero’,’goddess’:’diosa’,
-  ‘diva’:’diva’,’baby’:’bebé’,’boy’:’chico’,’girl’:’chica’,
-  ‘vampire’:’vampiro’,’mermaid’:’sirena’,’fairy’:’hada’,
-  ‘master’:’maestro’,’warrior’:’guerrero’,’hunter’:’cazador’,
-  ‘phantom’:’fantasma’,’ghost’:’espectro’,’spirit’:’espíritu’,
-  ‘my’:’mi’,’your’:’tu’,’her’:’su’,
-  // ── Abstract / emotional ──────────────────────────────────────────
-  ‘dream’:’sueño’,’dreams’:’sueños’,’nightmare’:’pesadilla’,
-  ‘illusion’:’ilusión’,’fantasy’:’fantasía’,’magic’:’magia’,
-  ‘mystic’:’místico’,’soul’:’alma’,’heart’:’corazón’,’mind’:’mente’,
-  ‘love’:’amor’,’hope’:’esperanza’,’fear’:’miedo’,’joy’:’alegría’,
-  ‘rage’:’furia’,’peace’:’paz’,’chaos’:’caos’,’bliss’:’dicha’,
-  ‘passion’:’pasión’,’paradise’:’paraíso’,’heaven’:’paraíso’,
-  ‘treasure’:’tesoro’,’mystery’:’misterio’,’envy’:’envidia’,
-  ‘glory’:’gloria’,’grace’:’gracia’,’beauty’:’belleza’,’desire’:’deseo’,
-  ‘whisper’:’susurro’,’breath’:’aliento’,’rush’:’torrente’,
-  ‘hint’:’toque’,’fizz’:’efervescencia’,’glitter’:’purpurina’,
-  ‘splash’:’salpicadura’,’vapor’:’vapor’,’steam’:’vapor’,
-  ‘surge’:’oleada’,’burst’:’destello’,’spark’:’chispa’,
-  ‘infinity’:’infinidad’,’eternity’:’eternidad’,’void’:’vacío’,
-  ‘eclipse’:’eclipse’,’mana’:’maná’,
-  // ── Seasons / time ────────────────────────────────────────────────
-  ‘spring’:’primavera’,’summer’:’verano’,’autumn’:’otoño’,’winter’:’invierno’,
-  ‘morning’:’mañana’,’evening’:’tarde’,
-  ‘moonless’:’sin luna’,’nocturnal’:’nocturno’,
-  // ── Places / cultures ─────────────────────────────────────────────
-  ‘french’:’francés’,’italian’:’italiano’,’irish’:’irlandés’,
-  ‘indian’:’hindú’,’persian’:’persa’,’aztec’:’azteca’,
-  ‘nordic’:’nórdico’,’bohemian’:’bohemio’,’byzantine’:’bizantino’,
-  ‘himalayan’:’himalayo’,’pacific’:’pacífico’,’arctic’:’ártico’,
-  ‘bermuda’:’bermuda’,’caribbean’:’caribeño’,
+  // Articles / prepositions
+  'the':'','a':'','an':'','of':'de','in':'en','on':'en','at':'en','by':'por',
+  'for':'para','with':'con','and':'y','to':'a','from':'de','into':'en',
+  'through':'a través','under':'bajo','over':'sobre','between':'entre',
+  'beyond':'más allá','without':'sin','above':'sobre','below':'bajo',
+  'around':'alrededor','within':'dentro','out':'fuera',
+  // French articles/prepositions (omit or translate)
+  'le':'','la':'','les':'','du':'de','des':'de','au':'con',
+  'noir':'negro','rouge':'rojo','bleu':'azul','blanc':'blanco',
+  'nuit':'noche','lait':'leche','grand':'gran','moelleux':'suave',
+  // Colors
+  'black':'negro','white':'blanco','red':'rojo','blue':'azul','green':'verde',
+  'yellow':'amarillo','orange':'naranja','purple':'morado','pink':'rosa',
+  'brown':'marrón','gray':'gris','grey':'gris','violet':'violeta','indigo':'índigo',
+  'turquoise':'turquesa','teal':'verde azulado','coral':'coral','salmon':'salmón',
+  'magenta':'magenta','crimson':'carmesí','scarlet':'escarlata','navy':'azul marino',
+  'olive':'oliva','lime':'lima','mint':'menta','aqua':'agua','cyan':'cian',
+  'lavender':'lavanda','lilac':'lila','amber':'ámbar','copper':'cobre',
+  'bronze':'bronce','rust':'óxido','gold':'dorado','silver':'plateado',
+  'ivory':'marfil','cream':'crema','rose':'rosa','peach':'durazno','plum':'ciruela',
+  'cherry':'cereza','wine':'vino','grape':'uva','lemon':'limón','apricot':'albaricoque',
+  'emerald':'esmeralda','ruby':'rubí','sapphire':'zafiro','jade':'jade',
+  'pearl':'perla','opal':'ópalo','topaz':'topacio','diamond':'diamante',
+  'fuchsia':'fucsia','mauve':'malva','maroon':'granate','ochre':'ocre',
+  'beige':'beige','taupe':'pardo','khaki':'caqui','tan':'tostado',
+  'chartreuse':'chartreuse','vermilion':'bermellón','sienna':'siena',
+  'sepia':'sepia','ecru':'crudo','bisque':'bisque',
+  'golden':'dorado','blush':'sonrosado',
+  // Food & drinks
+  'chocolate':'chocolate','banana':'plátano','milk':'leche','butter':'mantequilla',
+  'candy':'dulce','sugar':'azúcar','caramel':'caramelo','strawberry':'fresa',
+  'honey':'miel','coffee':'café','cheese':'queso','tomato':'tomate',
+  'mango':'mango','vanilla':'vainilla','pineapple':'piña','carrot':'zanahoria',
+  'apple':'manzana','tea':'té','cookie':'galleta','raspberry':'frambuesa',
+  'mocha':'moca','coconut':'coco','saffron':'azafrán','melon':'melón',
+  'pumpkin':'calabaza','champagne':'champán','corn':'maíz','kiwi':'kiwi',
+  'pistachio':'pistacho','mustard':'mostaza','marshmallow':'malvavisco',
+  'bread':'pan','garlic':'ajo','celery':'apio','fennel':'hinojo',
+  'truffle':'trufa','whiskey':'whisky','whisky':'whisky','latte':'latte',
+  'frapp':'frappé','frappe':'frappé','nacho':'nacho','pasta':'pasta',
+  'egg':'huevo','gum':'goma','pesto':'pesto','espresso':'espresso',
+  'crme':'crema','creme':'crema','vanilla':'vainilla',
+  'peanut':'maní','chili':'chile','chilli':'chile','cinnamon':'canela',
+  'ginger':'jengibre','curry':'curry','pepper':'pimienta','spice':'especia',
+  'toast':'tostado','cake':'pastel','pie':'pastel','bread':'pan',
+  'cookie':'galleta','biscuit':'galleta','waffle':'gofre',
+  'lemon':'limón','lime':'lima','orange':'naranja','cherry':'cereza',
+  'blueberry':'arándano','blackberry':'zarzamora','gooseberry':'grosella',
+  'watermelon':'sandía','cantaloupe':'melón','papaya':'papaya',
+  'mango':'mango','guava':'guayaba','fig':'higo','plum':'ciruela',
+  'peach':'durazno','apricot':'albaricoque','nectarine':'nectarina',
+  'pomegranate':'granada','passionfruit':'maracuyá',
+  'toffee':'toffee','caramel':'caramelo','butterscotch':'caramelo de mantequilla',
+  'nougat':'nougat','praline':'praliné','marzipan':'mazapán',
+  'meringue':'merengue','mousse':'mousse','cream':'crema',
+  // Nature
+  'sky':'cielo','ocean':'océano','sea':'mar','lake':'lago','river':'río',
+  'forest':'bosque','jungle':'selva','desert':'desierto','mountain':'montaña',
+  'valley':'valle','earth':'tierra','mud':'barro','clay':'arcilla','sand':'arena',
+  'stone':'piedra','rock':'roca','dust':'polvo','ash':'ceniza','fire':'fuego',
+  'flame':'llama','ember':'brasa','smoke':'humo','water':'agua','ice':'hielo',
+  'snow':'nieve','frost':'escarcha','rain':'lluvia','mist':'niebla','fog':'niebla',
+  'cloud':'nube','storm':'tormenta','thunder':'trueno','wind':'viento',
+  'breeze':'brisa','sun':'sol','moon':'luna','star':'estrella','galaxy':'galaxia',
+  'space':'espacio','cosmos':'cosmos','universe':'universo',
+  'night':'noche','day':'día','midnight':'medianoche','dawn':'amanecer',
+  'dusk':'crepúsculo','sunset':'atardecer','morning':'mañana','evening':'tarde',
+  'twilight':'penumbra','moonlight':'luz de luna','starlight':'luz de estrellas',
+  'sunlight':'luz del sol','firelight':'luz del fuego',
+  'aurora':'aurora','eclipse':'eclipse','horizon':'horizonte',
+  'moss':'musgo','grass':'hierba','leaf':'hoja','leaves':'hojas',
+  'flower':'flor','petal':'pétalo','bark':'corteza','wood':'madera',
+  'garden':'jardín','gardens':'jardines','meadow':'pradera','prairie':'pradera',
+  'woodland':'bosque','highland':'tierras altas','highlands':'tierras altas',
+  'beach':'playa','island':'isla','bay':'bahía','harbor':'puerto',
+  'lagoon':'laguna','pond':'estanque','pool':'piscina','tide':'marea',
+  'wave':'ola','waters':'aguas','seas':'mares','depths':'profundidades',
+  'cave':'cueva','canyon':'cañón','cliff':'acantilado','dune':'duna',
+  'tundra':'tundra','glacier':'glaciar','arctic':'ártico','tropical':'tropical',
+  'pacific':'pacífico','atlantic':'atlántico',
+  'clover':'trébol','lily':'lirio','orchid':'orquídea','poppy':'amapola',
+  'ivy':'hiedra','wisteria':'glicinia','pine':'pino','sunflower':'girasol',
+  'blossom':'flor','bloom':'flor','bud':'brote','tree':'árbol','branch':'rama',
+  'seed':'semilla','root':'raíz','fern':'helecho','thistle':'cardo',
+  'lavender':'lavanda','sage':'salvia','thyme':'tomillo','rosemary':'romero',
+  'cedar':'cedro','oak':'roble','birch':'abedul','willow':'sauce',
+  'blood':'sangre','bone':'hueso','skin':'piel',
+  // Materials & textures
+  'velvet':'terciopelo','silk':'seda','steel':'acero','iron':'hierro',
+  'crystal':'cristal','glass':'vidrio','mirror':'espejo',
+  'porcelain':'porcelana','marble':'mármol','granite':'granito',
+  'concrete':'concreto','asphalt':'asfalto','charcoal':'carbón',
+  'ink':'tinta','denim':'mezclilla','wool':'lana','cotton':'algodón',
+  'satin':'satén','linen':'lino','cashmere':'cachemira',
+  'leather':'cuero','metal':'metal','chrome':'cromo','brass':'latón',
+  'platinum':'platino','titanium':'titanio',
+  // Modifiers
+  'deep':'profundo','pale':'pálido','bright':'brillante','vivid':'vívido',
+  'muted':'apagado','warm':'cálido','cool':'fresco','hot':'caliente',
+  'cold':'frío','soft':'suave','pure':'puro','rich':'rico','true':'verdadero',
+  'electric':'eléctrico','royal':'real','imperial':'imperial','noble':'noble',
+  'neon':'neón','dark':'oscuro','light':'luz',
+  'vibrant':'vibrante','radiant':'radiante','ethereal':'etéreo',
+  'majestic':'majestuoso','opulent':'opulento','verdant':'frondoso',
+  'lush':'exuberante','fresh':'fresco','misty':'neblinoso',
+  'frosted':'escarchado','frozen':'congelado','stormy':'tormentoso',
+  'creamy':'cremoso','silky':'sedoso','polished':'pulido','metallic':'metálico',
+  'matt':'mate','mellow':'suave','muddy':'fangoso','heavy':'pesado',
+  'bold':'audaz','vivid':'vívido','pastel':'pastel','leafy':'frondoso',
+  'tropical':'tropical','galactic':'galáctico','cosmic':'cósmico',
+  'oceanic':'oceánico','botanical':'botánico','nocturne':'nocturno',
+  'lunar':'lunar','solar':'solar','atomic':'atómico','nuclear':'nuclear',
+  'toxic':'tóxico','acid':'ácido','acidic':'ácido','ancient':'antiguo',
+  'pristine':'prístino','homeopathic':'homeopático','intergalactic':'intergaláctico',
+  'celestial':'celestial','divine':'divino','holy':'sagrado',
+  'iridescent':'iridiscente','luminous':'luminoso','saturated':'saturado',
+  'rustic':'rústico','exotic':'exótico','vintage':'vintage',
+  'delicate':'delicado','romantic':'romántico','natural':'natural',
+  'liquid':'líquido','precious':'precioso','flaming':'llameante',
+  'overgrown':'exuberante','polar':'polar','silken':'sedoso',
+  'powdered':'en polvo','high':'alto','super':'súper','big':'gran',
+  'little':'pequeño','pretty':'bonito','happy':'feliz','lucky':'afortunado',
+  'good':'bueno','young':'joven','old':'viejo',
+  // Adjectives (qualities)
+  'alone':'solo','lost':'perdido','forgotten':'olvidado','haunted':'embrujado',
+  'enchanted':'encantado','hidden':'oculto','secret':'secreto',
+  'mysterious':'misterioso','eternal':'eterno','infinite':'infinito',
+  'vast':'vasto','burning':'ardiente','fading':'desvanecido',
+  'shining':'brillante','glowing':'luminoso','sparkling':'chispeante',
+  'glittering':'reluciente','broken':'roto','wild':'salvaje','serene':'sereno',
+  'silent':'silencioso','calm':'calmo','fierce':'feroz','gentle':'suave',
+  'bitter':'amargo','sweet':'dulce','sour':'ácido','still':'quieto',
+  'empty':'vacío','hollow':'hueco','void':'vacío','darkness':'oscuridad',
+  'shadow':'sombra','shade':'sombra','haze':'neblina','blur':'difuso',
+  'glow':'resplandor','gleam':'destello','shimmer':'brillo','sheen':'lustre',
+  'fury':'furia','fierce':'feroz','furious':'furioso','ferocious':'feroz',
+  'spicy':'picante','salty':'salado','bitter':'amargo',
+  // Animals
+  'flamingo':'flamenco','frog':'rana','whale':'ballena','fox':'zorro',
+  'tiger':'tigre','bear':'oso','lion':'león','dragon':'dragón',
+  'fish':'pez','shark':'tiburón','duck':'pato','serpent':'serpiente',
+  'lizard':'lagarto','cat':'gato','wolf':'lobo','deer':'ciervo',
+  'rabbit':'conejo','butterfly':'mariposa','bee':'abeja','moth':'polilla',
+  'crane':'grulla','hawk':'halcón','raven':'cuervo','peacock':'pavo real',
+  'elk':'alce','elk':'alce','hummingbird':'colibrí',
+  // People / roles
+  'kiss':'beso','kisses':'besos','king':'rey','queen':'reina',
+  'princess':'princesa','knight':'caballero','goddess':'diosa',
+  'diva':'diva','baby':'bebé','boy':'chico','girl':'chica',
+  'vampire':'vampiro','mermaid':'sirena','fairy':'hada',
+  'master':'maestro','warrior':'guerrero','hunter':'cazador',
+  'phantom':'fantasma','ghost':'espectro','spirit':'espíritu',
+  'my':'mi','your':'tu','her':'su',
+  // Abstract / emotional
+  'dream':'sueño','dreams':'sueños','nightmare':'pesadilla',
+  'illusion':'ilusión','fantasy':'fantasía','magic':'magia',
+  'mystic':'místico','soul':'alma','heart':'corazón','mind':'mente',
+  'love':'amor','hope':'esperanza','fear':'miedo','joy':'alegría',
+  'rage':'furia','peace':'paz','chaos':'caos','bliss':'dicha',
+  'passion':'pasión','paradise':'paraíso','heaven':'paraíso',
+  'treasure':'tesoro','mystery':'misterio','envy':'envidia',
+  'glory':'gloria','grace':'gracia','beauty':'belleza','desire':'deseo',
+  'whisper':'susurro','breath':'aliento','rush':'torrente',
+  'hint':'toque','fizz':'efervescencia','glitter':'purpurina',
+  'splash':'salpicadura','vapor':'vapor','steam':'vapor',
+  'surge':'oleada','burst':'destello','spark':'chispa',
+  'infinity':'infinidad','eternity':'eternidad','void':'vacío',
+  'eclipse':'eclipse','mana':'maná',
+  // Seasons / time
+  'spring':'primavera','summer':'verano','autumn':'otoño','winter':'invierno',
+  'midsummer':'pleno verano','midwinter':'pleno invierno','midnight':'medianoche',
+  'nights':'noches','days':'días','mornings':'mañanas','evenings':'tardes',
+  'morning':'mañana','evening':'tarde',
+  'moonless':'sin luna','nocturnal':'nocturno',
+  // Places / cultures
+  'french':'francés','italian':'italiano','irish':'irlandés',
+  'indian':'hindú','persian':'persa','aztec':'azteca',
+  'nordic':'nórdico','bohemian':'bohemio','byzantine':'bizantino',
+  'himalayan':'himalayo','pacific':'pacífico','arctic':'ártico',
+  'bermuda':'bermuda','caribbean':'caribeño',
+  // More descriptors
+  'endless':'infinito','boundless':'infinito','timeless':'eterno',
+  'endless':'infinito','boundless':'infinito',
+  'volcanic':'volcánico','glacial':'glacial','celestial':'celestial',
+  'crystal':'cristal','metallic':'metálico','electric':'eléctrico',
+  'mythic':'mítico','mythical':'mítico','arcane':'arcano','primal':'primordial',
+  'spectral':'espectral','spectral':'espectral','ethereal':'etéreo',
+  // More places/concepts
+  'highway':'autopista','town':'ciudad','village':'aldea','field':'campo',
+  'mountains':'montañas','forests':'bosques','gardens':'jardines',
+  'waters':'aguas','seas':'mares','hills':'colinas','clouds':'nubes',
+  'stars':'estrellas','leaves':'hojas','flowers':'flores','petals':'pétalos',
+  'dreams':'sueños','shadows':'sombras','flames':'llamas',
+  'federation':'federación','kingdom':'reino','empire':'imperio',
+  'civilization':'civilización','dynasty':'dinastía',
+  'harbor':'puerto','coast':'costa','canyon':'cañón','valley':'valle',
+  'summit':'cima','peak':'pico','shore':'orilla','ridge':'cresta',
+  'haven':'refugio','realm':'reino','world':'mundo','domain':'dominio',
+  'plain':'llanura','plains':'llanuras','hills':'colinas','woods':'bosque',
+  // More abstract
+  'fiction':'ficción','legend':'leyenda','myth':'mito','saga':'saga',
+  'quest':'búsqueda','voyage':'viaje','journey':'travesía','expedition':'expedición',
+  'surge':'oleada','flux':'flujo','pulse':'pulso','echo':'eco',
+  'hush':'silencio','haze':'neblina','rift':'grieta','veil':'velo',
+  'crown':'corona','blade':'hoja','coin':'moneda','gem':'joya',
+  'jewel':'joya','charm':'encanto','aura':'aura',
+  // More adjectives
+  'lunar':'lunar','solar':'solar','stellar':'estelar',
+  'nightly':'nocturno','nocturnal':'nocturno','frosty':'helado',
+  'stormy':'tormentoso','misty':'neblinoso','smoky':'ahumado',
+  'murky':'turbio','musty':'rancio','dewy':'con rocío',
+  'frosted':'escarchado','frosted':'escarchado',
+  'opaque':'opaco','matte':'mate','glossy':'brillante',
+  'powdery':'polvoriento','silky':'sedoso','velvety':'aterciopelado',
+  'crisp':'nítido','sharp':'agudo','bold':'audaz',
+  'sublime':'sublime','serene':'sereno','tranquil':'tranquilo',
+  'serenity':'serenidad','harmony':'armonía','clarity':'claridad',
+  'purity':'pureza','grace':'gracia','elegance':'elegancia',
 };
 
+
 function translateEs(name){
-  let s=name.toLowerCase();
-  // replace known phrases (longest first for greedy matching)
+  // Normalize: hyphens → spaces for easier phrase matching
+  let s=name.toLowerCase().replace(/[-]/g,' ');
+  // Replace known phrases (longest first)
   const sorted=Object.keys(PHRASES_ES).sort((a,b)=>b.length-a.length);
   for(const ph of sorted){
-    const re=new RegExp(‘(?:^|[\\s\\-])(‘+ph.replace(/[-’´]/g,’[\\s\\-]?’).replace(/\s+/g,’[\\s\\-]+’)+’)’+’(?:[\\s\\-]|$)’,’gi’);
-    s=s.replace(re,’ \x00’+PHRASES_ES[ph]+’\x00 ‘).trim();
+    const escaped=ph.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    const re=new RegExp('\\b'+escaped+'\\b','gi');
+    s=s.replace(re,'\x00'+PHRASES_ES[ph]+'\x00');
   }
-  // split on spaces/hyphens/apostrophes keeping \x00 segments intact
-  const parts=s.split(/[\s\-’’]+/);
+  // Split on spaces/apostrophes keeping \x00 segments intact
+  const parts=s.split(/[\s'']+/);
   const out=[];
-  let inPhrase=false,phraseAcc=’’;
+  let inPhrase=false,phraseAcc='';
   for(const p of parts){
-    if(p.startsWith(‘\x00’)&&p.endsWith(‘\x00’)){out.push(p.slice(1,-1));continue;}
-    if(p.startsWith(‘\x00’)){inPhrase=true;phraseAcc=p.slice(1);continue;}
-    if(inPhrase){phraseAcc+=’ ‘+p;if(p.endsWith(‘\x00’)){out.push(phraseAcc.slice(0,-1));inPhrase=false;phraseAcc=’’;}continue;}
-    const k=p.replace(/[^a-záéíóúüñ]/g,’’);
-    const kAscii=p.replace(/[^a-z]/g,’’);
-    if(kAscii in WORDS_ES){if(WORDS_ES[kAscii]!==’’)out.push(WORDS_ES[kAscii]);}
-    else if(k)out.push(p.replace(/[^\w\sáéíóúüñÁÉÍÓÚÜÑ]/g,’’));
+    if(!p)continue;
+    if(p.startsWith('\x00')&&p.endsWith('\x00')){out.push(p.slice(1,-1));continue;}
+    if(p.startsWith('\x00')){inPhrase=true;phraseAcc=p.slice(1);continue;}
+    if(inPhrase){phraseAcc+=' '+p;if(p.endsWith('\x00')){out.push(phraseAcc.slice(0,-1));inPhrase=false;phraseAcc='';}continue;}
+    const k=p.replace(/[^a-z]/g,'');
+    if(k in WORDS_ES){if(WORDS_ES[k]!=='')out.push(WORDS_ES[k]);}
+    else if(p.trim())out.push(p);
   }
-  // Fix Spanish word order: [modifier][color] → [color][modifier]
-  const COLOR_NOUNS=new Set([‘azul’,’rojo’,’verde’,’amarillo’,’naranja’,’morado’,’rosa’,’marrón’,’gris’,’negro’,’blanco’,’violeta’,’índigo’,’turquesa’,’carmesí’,’escarlata’,’coral’,’salmón’,’magenta’,’fucsia’,’lavanda’,’lila’,’ámbar’,’cobre’,’bronce’,’dorado’,’plateado’,’marfil’,’crema’,’ciruela’,’cereza’,’vino’,’uva’,’limón’,’albaricoque’,’esmeralda’,’rubí’,’zafiro’,’jade’,’perla’,’ópalo’,’topacio’,’diamante’,’cian’,’lima’,’menta’,’oliva’,’malva’,’pardo’,’beige’,’ocre’,’siena’,’sepia’]);
-  const COLOR_MODS=new Set([‘oscuro’,’claro’,’profundo’,’pálido’,’brillante’,’vívido’,’apagado’,’cálido’,’fresco’,’caliente’,’frío’,’puro’,’rico’,’eléctrico’,’real’,’imperial’,’neón’,’ardiente’,’luminoso’,’reluciente’,’galáctico’,’vibrante’,’etéreo’,’radiante’,’majestuoso’,’opulento’,’tormentoso’,’escarchado’,’cremoso’,’neblinoso’,’congelado’,’saturado’,’pastel’,’intenso’,’mate’,’metálico’,’cósmico’,’lunar’,’solar’,’dorado’,’plateado’,’sonrosado’,’exuberante’,’polvo’,’prístino’,’frondoso’]);
-  if(out.length===2&&!out[0].includes(‘ ‘)&&!out[1].includes(‘ ‘)){
-    const [a,b]=[out[0].toLowerCase(),out[1].toLowerCase()];
-    if(COLOR_MODS.has(a)&&COLOR_NOUNS.has(b))out=[out[1],out[0]];
-  }else if(out.length===3&&out.every(t=>!t.includes(‘ ‘))){
-    const c=out[2].toLowerCase();
-    if(COLOR_NOUNS.has(c)&&(COLOR_MODS.has(out[0].toLowerCase())||COLOR_MODS.has(out[1].toLowerCase())))
-      out=[out[2],out[0],out[1]];
+  // Fix Spanish word order: [modifier/noun] [color] → [color] [modifier/noun]
+  // In Spanish: "Dark Blue"→"Azul oscuro", "Saffron Orange"→"Naranja azafrán"
+  const BASIC_COLORS=new Set([
+    'azul','rojo','verde','amarillo','naranja','morado','rosa','marrón','gris',
+    'negro','blanco','violeta','índigo','turquesa','carmesí','escarlata','coral',
+    'salmón','magenta','fucsia','lavanda','lila','cian','lima',
+    'dorado','plateado','ámbar','bronce','cobre','oro','plata',
+  ]);
+  // Broader set: color words + common nouns that swap with adjectives
+  const ALL_COLORS=new Set([
+    ...BASIC_COLORS,
+    'ámbar','cobre','bronce','plateado','marfil','crema','ciruela','cereza','vino',
+    'uva','limón','albaricoque','esmeralda','rubí','zafiro','jade','perla','ópalo',
+    'topacio','diamante','menta','oliva','malva','pardo','beige','ocre','siena',
+    'sepia','frambuesa','durazno','moca','chocolate','caramelo','fresa','melocotón',
+    // Nature / abstract nouns that take adjectives after in Spanish
+    'noche','niebla','neblina','bruma','bosque','selva','jardín','magia','cielo',
+    'lago','océano','mar','sueño','paraíso','fuego','luna','sol','estrella',
+    'galaxia','espacio','tierra','pradera','arena','piedra','montaña','isla',
+    'tormenta','lluvia','nieve','hielo','escarcha','viento','brisa','polvo',
+    'ceniza','humo','llama','cristal','seda','sangre','luz','sombra','destello',
+    'corazón','alma','amor','paz','maravilla','aurora','misterio','eternidad',
+    'ciudad','pueblo','camino','sendero','campo','valle','horizonte','orilla',
+    'brillo','resplandor','espectro','fantasma','hada','sirena','dragón',
+    'autopista','carretera','federación','reino','imperio','civilización',
+    'montañas','estrellas','colinas','bosques','jardines','aguas','nubes',
+  ]);
+  // Feminine nouns (for adjective gender agreement)
+  const FEM_NOUNS=new Set([
+    // Singular feminine
+    'noche','niebla','neblina','bruma','selva','magia','luna','galaxia','estrella',
+    'tierra','pradera','arena','piedra','montaña','isla','tormenta','lluvia',
+    'nieve','escarcha','brisa','ceniza','llama','seda','sangre','luz','sombra',
+    'aurora','ciudad','orilla','eternidad','paz','maravilla','alma','sirena','hada',
+    'autopista','federación','civilización','dinastía',
+    'lavanda','lila','crema','ciruela','cereza','uva','frambuesa','esmeralda',
+    'turquesa','fucsia','naranja','rosa','oliva','malva','lima',
+    // Plural feminine (for plural noun + adjective agreement)
+    'montañas','islas','estrellas','colinas','nubes','llamas','aguas','flores',
+    'hojas','noches','nieblas','praderas','arenas','piedras','tormentas',
+    'galaxias','selvas','sombras','cenizas','brisas',
+  ]);
+  // General adjectives that should follow their noun
+  const ADJECTIVES=new Set([
+    'oscuro','claro','profundo','pálido','brillante','vívido','apagado','cálido',
+    'fresco','caliente','frío','puro','rico','eléctrico','real','imperial','neón',
+    'ardiente','luminoso','reluciente','galáctico','vibrante','etéreo','radiante',
+    'majestuoso','opulento','tormentoso','escarchado','cremoso','neblinoso',
+    'congelado','saturado','pastel','intenso','mate','metálico','cósmico',
+    'lunar','solar','sonrosado','exuberante','prístino','frondoso','salvaje',
+    'misterioso','encantado','antiguo','herbal','botánico','homeopático',
+    'tropical','ártico','oceánico','galáctico','intergaláctico','nocturno',
+    'romántico','delicado','silencioso','sereno','dulce','amargo','polvo',
+    'volcánico','místico','eléctrico','eterno','infinito','celestial','divino','eterno',
+    'infinito','oceánico','glacial','estelar','nocturno','perpetuo','sublime',
+    'sagrado','iridiscente','luminoso','vintage','exótico','rústico',
+  ]);
+  let finalOut=out.slice();
+  if(finalOut.length===2&&!finalOut[0].includes(' ')&&!finalOut[1].includes(' ')){
+    const [a,b]=[finalOut[0].toLowerCase(),finalOut[1].toLowerCase()];
+    // Rule 1: [adj] [swappable-noun] → [noun] [adj with gender]
+    if(ADJECTIVES.has(a)&&ALL_COLORS.has(b)){
+      finalOut=[finalOut[1],finalOut[0]];
+      // Gender agreement: feminine singular -o→-a, feminine plural -o→-as
+      if(FEM_NOUNS.has(b)&&finalOut[1].match(/o$/)){
+        const suf=b.endsWith('as')||b.endsWith('es')?'as':'a';
+        finalOut[1]=finalOut[1].slice(0,-1)+suf;
+      }
+    }
+    // Rule 2: [noun/fancy-color] [base-color] → [base-color] [noun/fancy-color]
+    else if(!BASIC_COLORS.has(a)&&BASIC_COLORS.has(b)){
+      finalOut=[finalOut[1],finalOut[0]];
+    }
+    // Rule 3: [base-color] [non-basic-swappable-noun] → [noun] [color]
+    // e.g. "Silver Storm" → "Tormenta plateada"
+    else if(BASIC_COLORS.has(a)&&ALL_COLORS.has(b)&&!BASIC_COLORS.has(b)){
+      finalOut=[finalOut[1],finalOut[0]];
+      if(FEM_NOUNS.has(b)&&finalOut[1].match(/o$/)){
+        const suf=b.endsWith('as')||b.endsWith('es')?'as':'a';
+        finalOut[1]=finalOut[1].slice(0,-1)+suf;
+      }
+    }
+  }else if(finalOut.length===3&&finalOut.every(t=>!t.includes(' '))){
+    const [a,b,c]=[finalOut[0].toLowerCase(),finalOut[1].toLowerCase(),finalOut[2].toLowerCase()];
+    if(ALL_COLORS.has(c)&&ADJECTIVES.has(a)){
+      finalOut=[finalOut[2],finalOut[0],finalOut[1]];
+      if(FEM_NOUNS.has(c)&&finalOut[1].match(/o$/)){
+        const suf=c.endsWith('as')||c.endsWith('es')?'as':'a';
+        finalOut[1]=finalOut[1].slice(0,-1)+suf;
+      }
+    }
   }
-  const r=out.join(‘ ‘).trim();
+  const r=finalOut.join(' ').trim();
   return r?r.charAt(0).toUpperCase()+r.slice(1):name;
 }
 
@@ -815,7 +938,7 @@ searchInput.addEventListener('input',()=>{
   clearTimeout(debounceTimer);
   debounceTimer=setTimeout(()=>{currentPage=0;render();},200);
 });
-clearBtn.addEventListener('click',()=>{searchInput.value='';currentQuery='';pickerMode=false;clearBtn.classList.remove('visible');currentPage=0;render();});
+clearBtn.addEventListener('click',()=>{searchInput.value='';currentQuery='';pickerMode=true;clearBtn.classList.remove('visible');currentPage=0;render();});
 document.getElementById('sortSelect').addEventListener('change',function(){currentSort=this.value;currentPage=0;render();});
 document.getElementById('closeDetail').addEventListener('click',()=>{
   document.getElementById('detailPanel').classList.remove('open');
@@ -823,7 +946,7 @@ document.getElementById('closeDetail').addEventListener('click',()=>{
 });
 
 // ===== HWB SLIDERS =====
-let pickerH=0, pickerW=0, pickerB=0;
+let pickerH=0, pickerW=0, pickerB=0, pickerRange=5;
 
 function hwbToRgb(h,w,b){
   w/=100;b/=100;
@@ -857,13 +980,13 @@ function syncPickerFromHWB(){
   const [r,g,b]=hwbToRgb(pickerH,pickerW,pickerB);
   const hex=rgbToHex(r,g,b);
   document.getElementById('pickerPreview').style.background=hex;
-  document.getElementById('pickerHexInput').value=hex;
+  document.getElementById('pickerHexInput').textContent=hex;
   document.getElementById('hueVal').textContent=Math.round(pickerH);
   document.getElementById('whitenessVal').textContent=Math.round(pickerW);
   document.getElementById('blacknessVal').textContent=Math.round(pickerB);
   updateSliderGradients();
+  pickerRgb=[r,g,b];
   if(pickerMode){
-    pickerRgb=[r,g,b];
     clearTimeout(pickerDebounce);
     pickerDebounce=setTimeout(()=>{currentPage=0;render();},120);
   }
@@ -873,19 +996,8 @@ let pickerDebounce;
 document.getElementById('hueSlider').addEventListener('input',function(){pickerH=+this.value;pickerMode=true;searchInput.value='';currentQuery='';clearBtn.classList.remove('visible');syncPickerFromHWB();});
 document.getElementById('whitenessSlider').addEventListener('input',function(){pickerW=+this.value;pickerMode=true;searchInput.value='';currentQuery='';clearBtn.classList.remove('visible');syncPickerFromHWB();});
 document.getElementById('blacknessSlider').addEventListener('input',function(){pickerB=+this.value;pickerMode=true;searchInput.value='';currentQuery='';clearBtn.classList.remove('visible');syncPickerFromHWB();});
+document.getElementById('rangeSlider').addEventListener('input',function(){pickerRange=+this.value;document.getElementById('rangeVal').textContent=pickerRange+'%';currentPage=0;render();});
 
-document.getElementById('pickerHexInput').addEventListener('input',function(){
-  const v=this.value.trim();
-  if(/^#[0-9a-fA-F]{6}$/.test(v)){
-    const [r,g,b]=hexToRgb(v);
-    [pickerH,pickerW,pickerB]=rgbToHwb(r,g,b);
-    document.getElementById('hueSlider').value=pickerH;
-    document.getElementById('whitenessSlider').value=pickerW;
-    document.getElementById('blacknessSlider').value=pickerB;
-    pickerMode=true;searchInput.value='';currentQuery='';clearBtn.classList.remove('visible');
-    syncPickerFromHWB();
-  }
-});
 
 setTimeout(init,10);
 </script>
