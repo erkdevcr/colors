@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Color Names</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -24,10 +25,9 @@
 
   /* HEADER */
   header { background:var(--surface); border-bottom:1px solid var(--border); padding:14px 24px; display:flex; align-items:center; gap:12px; position:sticky; top:0; z-index:100; }
-  .logo { display:flex; align-items:center; gap:10px; }
-  .logo-text { font-size:16px; font-weight:600; color:var(--text); }
-  .logo-sub { font-size:11px; color:var(--text-muted); margin-top:1px; }
-  .stat-pill { margin-left:auto; display:inline-flex; align-items:center; gap:5px; background:var(--surface2); border:1px solid var(--border); border-radius:20px; padding:3px 10px; font-size:11px; color:var(--text-muted); }
+  .logo { display:flex; align-items:center; gap:10px; flex:1; justify-content:center; }
+  .logo-text { font-size:20px; font-weight:600; color:var(--text); }
+  .stat-pill { margin-left:auto; display:inline-flex; align-items:center; gap:5px; background:var(--surface2); border:1px solid var(--border); border-radius:20px; padding:3px 13px; font-size:13px; color:var(--text-muted); }
 
   /* CONTROLS AREA */
   .controls { padding:16px 24px 0; display:flex; flex-direction:column; gap:12px; }
@@ -177,20 +177,15 @@
 
 <header>
   <div class="logo">
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-      <circle cx="9" cy="9" r="7" fill="#e05252"/>
-      <circle cx="19" cy="9" r="7" fill="#52a8e0" fill-opacity=".85"/>
-      <circle cx="14" cy="18" r="7" fill="#52e07a" fill-opacity=".75"/>
+    <svg width="32" height="32" viewBox="0 0 32 32">
+      <path fill="#f33" d="M3.4,11.62c-.75,0-1.49-.28-2.06-.85C.2,9.63.2,7.79,1.34,6.65,9.42-1.43,22.58-1.43,30.66,6.65c1.14,1.14,1.14,2.98,0,4.12-1.14,1.14-2.99,1.14-4.12,0-5.81-5.81-15.26-5.81-21.07,0-.57.57-1.31.85-2.06.85Z"/>
+      <path fill="#f90" d="M25,18.29c-.75,0-1.49-.28-2.06-.85-1.85-1.85-4.32-2.87-6.94-2.87s-5.08,1.02-6.94,2.87c-1.14,1.14-2.98,1.14-4.12,0s-1.14-2.98,0-4.12c2.95-2.95,6.88-4.58,11.06-4.58s8.1,1.63,11.06,4.58c1.14,1.14,1.14,2.98,0,4.12-.57.57-1.31.85-2.06.85Z"/>
+      <path fill="#4d4" d="M21.4,24.65c-.75,0-1.49-.29-2.06-.85-1.84-1.84-4.83-1.84-6.67,0-1.14,1.14-2.98,1.14-4.12,0-1.14-1.14-1.14-2.98,0-4.12,1.99-1.99,4.64-3.09,7.46-3.09s5.47,1.1,7.46,3.09c1.14,1.14,1.14,2.98,0,4.12-.57.57-1.32.85-2.06.85Z"/>
+      <path fill="#39f" d="M17.8,31.18c-.64,0-1.27-.21-1.8-.62-1.14.9-2.81.82-3.86-.23-1.14-1.14-1.14-2.98,0-4.12,2.13-2.13,5.59-2.13,7.72,0,1.14,1.14,1.14,2.98,0,4.12-.57.57-1.32.86-2.06.86Z"/>
     </svg>
-    <div>
-      <div class="logo-text">Color Names</div>
-      <div class="logo-sub">Name, HEX, RGB &amp; CMYK</div>
-    </div>
+    <div class="logo-text">Color Names</div>
   </div>
-  <span class="stat-pill" id="totalStat">
-    <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4.5" fill="none" stroke="currentColor" stroke-width="1"/></svg>
-    loading…
-  </span>
+  <span class="stat-pill" id="totalStat"><span style="color:#fff">+30 K</span> <span style="color:#FF3333">C</span><span style="color:#FF9900">O</span><span style="color:#FFDD00">L</span><span style="color:#44DD44">O</span><span style="color:#3399FF">R</span><span style="color:#AA44FF">S</span></span>
 </header>
 
 <div id="main">
@@ -332,8 +327,6 @@ function init(){
     const [h,s,l]=rgbToHsl(r,g,b);
     return{name,hex,r,g,b,h,s,l,nameL:name.toLowerCase()};
   });
-  document.getElementById('totalStat').innerHTML=
-    `<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4.5" fill="none" stroke="currentColor" stroke-width="1"/></svg>${allColors.length.toLocaleString()} colors`;
   document.getElementById('loadingMsg').remove();
   syncPickerFromHSL();
   render();
